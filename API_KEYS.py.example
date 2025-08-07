@@ -1,0 +1,5 @@
+# API_KEYS.py.example
+# Скопируй этот файл в API_KEYS.py и вставь свои ключи
+
+BOT_TOKEN = "1234567890:your_telegram_bot_token"
+OPENWEATHER_API_KEY = "your_openweathermap_api_key"

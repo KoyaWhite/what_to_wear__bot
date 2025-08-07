@@ -1,0 +1,13 @@
+# Секреты
+API_KEYS.py
+
+# Виртуальное окружение
+__pycache__
+*.pyc
+venv/
+env/
+.venv/
+
+# Логи
+logs/
+*.log
