@@ -1,8 +1,9 @@
 # services/weather_service.py
 import requests
+import time
 from bot_instance import OPENWEATHER_API_KEY
 
-# Маппинг: кириллические названия → латиница (для лучшего поиска в OpenWeatherMap)
+# Маппинг: кириллические названия → латиница
 CITY_ALIASES = {
     "Москва": "Moscow",
     "Санкт-Петербург": "Saint Petersburg",
@@ -20,24 +21,38 @@ CITY_ALIASES = {
     "Пермь": "Perm",
     "Волгоград": "Volgograd",
     "Краснодар": "Krasnodar"
-    # Можно добавлять новые города по мере необходимости
 }
+
+# Кэш: {город: (температура, city_name, timestamp)}
+WEATHER_CACHE = {}
+CACHE_TTL = 1200  # 30 минут (в секундах)
 
 def get_weather(city: str):
     """
-    Получает текущую температуру в указанном городе.
-    :param city: Название города (на русском или английском)
+    Получает погоду из кэша (если актуальна) или из API.
+    :param city: Название города
     :return: (температура, название города) или (None, сообщение_об_ошибке)
     """
-    # Убираем лишние пробелы
     city = city.strip()
     if not city:
         return None, "Название города не может быть пустым."
 
+    current_time = time.time()
+
+    # Проверяем кэш
+    if city in WEATHER_CACHE:
+        temp, city_name, timestamp = WEATHER_CACHE[city]
+        if current_time - timestamp < CACHE_TTL:
+            print(f"[CACHE] Используем кэш для {city}: {temp}°C")
+            return temp, city_name
+        else:
+            print(f"[CACHE] Кэш устарел для {city}, обновляем...")
+            del WEATHER_CACHE[city]
+
     # Преобразуем в латиницу, если есть алиас
     city_for_api = CITY_ALIASES.get(city, city)
 
-    # Шаг 1: Геокодирование — получение координат
+    # Шаг 1: Геокодирование
     geo_url = "http://api.openweathermap.org/geo/1.0/direct"
     geo_params = {
         "q": city_for_api,
@@ -65,13 +80,13 @@ def get_weather(city: str):
             lon = location["lon"]
             city_name = location.get("local_names", {}).get("ru", location["name"])
 
-            # Шаг 2: Получение погоды по координатам
+            # Шаг 2: Получение погоды
             weather_url = "https://api.openweathermap.org/data/2.5/weather"
             weather_params = {
                 "lat": lat,
                 "lon": lon,
                 "appid": OPENWEATHER_API_KEY,
-                "units": "metric",  # градусы Цельсия
+                "units": "metric",
                 "lang": "ru"
             }
 
@@ -80,7 +95,9 @@ def get_weather(city: str):
 
             if weather_response.status_code == 200:
                 temp = round(weather_response.json()["main"]["temp"])
-                print(f"[INFO] Успешно получена погода: {city_name} — {temp}°C")
+                # Сохраняем в кэш
+                WEATHER_CACHE[city] = (temp, city_name, current_time)
+                print(f"[CACHE] Сохранено в кэш: {city} → {temp}°C")
                 return temp, city_name
 
             elif weather_response.status_code == 401:

@@ -1,25 +1,9 @@
 # keyboards/city_keyboard.py
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
+from services.weather_service import CITY_ALIASES
 
 # Список популярных городов России
-CITIES = [
-    "Москва",
-    "Санкт-Петербург",
-    "Новосибирск",
-    "Екатеринбург",
-    "Казань",
-    "Нижний Новгород",
-    "Челябинск",
-    "Самара",
-    "Омск",
-    "Ростов-на-Дону",
-    "Уфа",
-    "Красноярск",
-    "Воронеж",
-    "Пермь",
-    "Волгоград",
-    "Краснодар"
-]
+CITIES = list(CITY_ALIASES.keys())
 
 # Кнопка поддержки
 SUPPORT_BUTTON_TEXT = "⭐ Поддержать автора ⭐️"
