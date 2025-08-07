@@ -40,6 +40,6 @@ async def handle_city_selection(message: types.Message):
         f"📍 Город: {city_name}\n"
         f"🌡️ Температура: {temp}°C\n"
         f"{header}\n\n"
-        f"👘 Что надеть:\n{outfit}"
+        f"**Что надеть:**\n{outfit}"
     )
     await message.answer(result)
