@@ -17,7 +17,7 @@ async def cmd_start(message: types.Message):
 
 @router.message()
 async def handle_city_selection(message: types.Message):
-    city = message.text.strip()
+    city = str(message.text).strip()
 
     from keyboards.city_keyboard import CITIES
     if city not in CITIES:
@@ -40,6 +40,6 @@ async def handle_city_selection(message: types.Message):
         f"📍 Город: {city_name}\n"
         f"🌡️ Температура: {temp}°C\n"
         f"{header}\n\n"
-        f"👗 Что надеть:\n{outfit}"
+        f"👘 Что надеть:\n{outfit}"
     )
     await message.answer(result)
