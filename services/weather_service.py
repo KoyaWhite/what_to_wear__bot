@@ -1,6 +1,6 @@
 # services/weather_service.py
 import requests
-from API_KEYS import OPENWEATHER_API_KEY
+from bot_instance import OPENWEATHER_API_KEY  # ← добавь экспорт в bot_instance.py
 
 # Маппинг: кириллические названия → латиница (для лучшего поиска в OpenWeatherMap)
 CITY_ALIASES = {

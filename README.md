@@ -83,30 +83,20 @@ cd weather-bot
 pip install aiogram requests
 ```
 
-> ⚠️ Рекомендуется использовать виртуальное окружение:
-> ```bash
-> python -m venv venv
-> source venv/bin/activate  # Linux/macOS
-> # или
-> venv\Scripts\activate     # Windows
-> ```
-
 ### 3. Настрой ключи API
 
 Скопируй шаблон конфигурации и заполни своими ключами:
 
 ```bash
-cp API_KEYS.py.example API_KEYS.py
+cp .env.example .env
 ```
 
-Открой файл `API_KEYS.py` и вставь свои данные:
+Отредактируй .env и вставь свои ключи:
 
 ```python
 BOT_TOKEN = "1234567890:your_telegram_bot_token_here"
 OPENWEATHER_API_KEY = "your_openweathermap_api_key_here"
 ```
-
-> 🔐 Файл `API_KEYS.py` добавлен в `.gitignore` — ваши ключи **не попадут в репозиторий**.
 
 ### 4. Запусти бота
 ```bash

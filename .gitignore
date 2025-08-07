@@ -1,13 +1,19 @@
 # Секреты
+.env
+.env.local
 API_KEYS.py
 
 # Виртуальное окружение
-__pycache__
-*.pyc
 venv/
 env/
 .venv/
-.env/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyc
 
 # Логи
 logs/
